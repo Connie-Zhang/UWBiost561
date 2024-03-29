@@ -9,22 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Q0: Survey
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Question 0A: Please let us know your preferred name.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+> Connie. 
 
-```{r cars}
-summary(cars)
-```
+Question 0B: Please read the syllabus in its entirety and write, “I have read and understood the entire syllabus,” for this question. If you have any questions about the syllabus (for example, on the homework submission policy or collaboration policy), you may ask them here.
 
-## Including Plots
+> I have read and understood the entire syllabus. 
 
-You can also embed plots, for example:
+Question 0C: If any, please briefly describe the courses you have taken at UW that involve coding (in any language) so far and how familiar/comfortable you are in coding in R. (Note: We do not expect you to have taken any such courses already.)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+> BIOST 514 and 515 involves codingn in R. I am comfortable with coding in R. I have created shiny apps and done simulation studies in R. 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Question 0D: What do you hope to learn from this course? (It is alright if you leave this blank, but it would be helpful to hear your thoughts.)
+
+> I hope to learn more about how to write R packages, code testing and debugging. 
+
+## Q1: Setting up an R package and GitHub
+
+## Q2: Simulating the Central Limit Theorem
