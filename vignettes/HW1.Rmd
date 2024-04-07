@@ -1,6 +1,6 @@
 ---
 title: "HW1"
-output: rmarkdown::html_vignette
+output: rmarkdown::github_document
 vignette: >
   %\VignetteIndexEntry{HW1}
   %\VignetteEngine{knitr::rmarkdown}
