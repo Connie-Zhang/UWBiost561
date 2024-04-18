@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-```{r,echo=FALSE}
+```{r, echo=FALSE}
 library(bookdown)
 library(tidyverse)
 library(ggplot2)
