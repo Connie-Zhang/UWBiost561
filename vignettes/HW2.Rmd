@@ -1,0 +1,154 @@
+---
+title: "HW2"
+author: "Connie Zhang"
+date: "2024-04-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r,echo=FALSE}
+library(bookdown)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+## Q1: Practice using tibbles
+
+```{r}
+country_population <- readr::read_csv("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/country_population.csv")
+country_birth <- readr::read_csv("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/country_birth.csv")
+```
+
+### Question 1A
+
+```{r}
+mean_population <- country_population %>% 
+  filter(year %in% c(1990:2010)) %>% 
+  summarize(mean_population = round(sum(population)/21),.by = c(iso3c,country))
+head(mean_population)
+```
+
+### Question 1B
+
+```{r}
+life_expect <- country_birth %>%
+  filter(year %in% c(1990:2010)) %>%
+  select(iso3c, year, life_expect) %>%
+  na.omit() %>%
+  summarize(max_life_expect=max(life_expect), min_life_expect=min(life_expect), .by=iso3c) %>%
+  mutate(range_life_expect = max_life_expect-min_life_expect) %>%
+  mutate_at(c("max_life_expect","min_life_expect","range_life_expect"),function(x) signif(x,3)) %>% 
+  arrange(iso3c)
+head(life_expect)
+```
+
+### Question 1C
+
+> The country_both tibble has 202 rows and 6 columns
+
+```{r, message=TRUE}
+country_both <- as.tibble(inner_join(mean_population, life_expect, by=join_by(iso3c)))
+head(country_both,10)
+```
+
+## Question 2: Practice using ggplot via scatterplots and facets
+
+```{r}
+penguins <- readr::read_csv("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/palmerpenguins.csv")
+```
+
+```{r, out.width="50%"}
+penguins %>%
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point()
+```
+
+
+### Question 2A
+
+```{r, out.width="50%"}
+penguins %>%
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm,color=species)) +
+  geom_point() + 
+  scale_color_manual(values=c("Adelie"="cornflowerblue","Chinstrap"="coral2","Gentoo"="goldenrod3")) +
+  labs(x="Bill Depth (mm)", y="Bill length (mm)", title=paste("Relation among",dim(penguins)[1],"Penguins"))
+```
+
+
+### Question 2B
+
+```{r,out.width="65%"}
+penguins %>%
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm,color=species)) +
+  geom_point(alpha=0.5) + 
+  scale_color_manual(values=c("Adelie"="cornflowerblue","Chinstrap"="coral2","Gentoo"="goldenrod3")) +
+  labs(x="Bill Depth (mm)", y="Bill length (mm)", title=paste("Relation among",dim(penguins)[1],"Penguins")) +
+  facet_wrap(~species) + 
+  geom_smooth()
+```
+
+## Question 3: Practice using ggplot via heatmaps
+
+```{r}
+source("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/random_graph_functions.R")
+```
+
+```{r}
+set.seed(0)
+result <- generate_random_graph(n = 20,
+                                clique_fraction = 0.5,
+                                density_low = 0.1)
+adj_mat <- result$adj_mat
+dim(adj_mat)
+#> [1] 20 20
+adj_mat[1:5,1:5]
+result$rev_order
+```
+
+### Question 3A
+
+> The generate_random_graph function takes in three inputs: n, density_low, and clique_fraction. It first checks that the arguments are correct, n is an integer and greater than 0, clique_fraction and density_low are between 0 and 1. Then it makes a nxn matrix with 0 and 1s, with density_low as the probability of generating a 1. Then it symmetrizes the matrix by adding the matrix to its transpose, setting all entries greater than 0 to 1, and setting the diagonal of the matrix to 1s. Then the function form the square clique matrix of 1s with the dimension of the rounded n*clique_fraction value. The order of the entries/nodes are then randomized within the symmetric matrix constructed earlier. The function returns the randomized matrix and the reverse order of the nodes in the randomized matrix.
+
+### Question 3B
+
+> The pivot_longer_heatmap has one input, the adjacent matrix. The function first converts the matrix to a tibble with column names as the number of the column. Row numbers are also added as a new column in the tibble. Then the pivot_longer function is used to convert the matrix from wide to long format, where the function pivot using the columns other than the column with the Row numbers, then two columns are created, where the "column" column has the form "node: (the column number of the value)", and the "Value" column contains the value of the entrie that is in that (row,column). The "Column" column is then mutated to a numeric value by taking off the "node:" and only keeping the number of the node, and the "Row" and "Column" columns are renamed to "X" and "Y". 
+
+```{r}
+mat_long <- pivot_longer_heatmap(adj_mat)
+```
+
+### Question 3C
+
+```{r,out.width="50%"}
+mat_long %>%
+  ggplot(aes(x=X,y=Y,fill=as.factor(Value))) +
+  geom_tile() + 
+  scale_fill_manual(values=c("0"="palegoldenrod","1"="coral2")) +
+  labs(x="Row",y="Column",fill="Value") +
+  coord_fixed(ratio=1)
+```
+
+### Question 3D
+
+```{r}
+adj_mat2 <- result$adj_mat[result$rev_order, result$rev_order]
+```
+
+```{r,out.width="50%"}
+mat_long2 <- pivot_longer_heatmap(adj_mat2)
+mat_long2 %>%
+  ggplot(aes(x=X,y=Y,fill=as.factor(Value))) +
+  geom_tile() + 
+  scale_fill_manual(values=c("0"="palegoldenrod","1"="coral2")) +
+  labs(x="Row",y="Column",fill="Value") +
+  coord_fixed(ratio=1)
+```
+
+## Question 4: Planning for the next homework – thinking how to test a function
+
+> We can use the generate_random_matrix function to construct a matrix that we know how big the clique is (by clique_fraction input we set). I would choose matrices of different sizes such as 5,50,500... Then I would use the output matrices to test the function my teammate gave me since I know the size of the clique. We can try edge cases such as an empty matrix, matrix of 1 entry, rectangular matrix etc to see what the function returns. We also try inputting a tibble or dataframe that resembles an adjacent matrix. Further, we can test if the function can compute the maximal clique if we use different values (such as -1 and 1) or different characters (such as N and Y) to represent 0 and 1. 
+
