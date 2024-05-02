@@ -27,3 +27,15 @@ generate_random_graph
 
 Create a function generate_partial_clique() inside your UWBiost561 package inside a file called generate_partial_clique.R inside your R folder. 
 
+```{r}
+library(UWBiost561)
+set.seed(0)
+simulation <- UWBiost561::generate_partial_clique(
+  n = 10,
+  clique_fraction = 0.5,
+  clique_edge_density = 0.9
+)
+
+simulation$adj_mat
+```
+

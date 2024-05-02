@@ -1,10 +1,10 @@
-#' @param n, clique fraction, clique edge density
+#' @param clique fraction, clique edge density
 #' @return a list
 #' @export
 generate_partial_clique <- function(n,clique_fraction=0.5,clique_edge_density=1){
   stopifnot(n %% 1 == 0, n >= 0,
             clique_fraction >= 0, clique_fraction <= 1,
-            density_low >= 0, density_low <= 1)
+            clique_edge_density >= 0, clique_edge_density <= 1)
 
   adj_mat <- matrix(sample(x = c(0,1),
                            size = n^2,
