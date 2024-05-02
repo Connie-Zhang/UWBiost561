@@ -1,11 +1,6 @@
 
-
-# 1B: use ROxygen skeleton to write documentation and export (lecture 4 demo)
-# 1C: install your package
-# 1D: test function by running code in homework Rmd.
-
-#'@export
-
+#' @return a list
+#' @export
 generate_partial_clique <- function(n,clique_fraction=0.5,clique_edge_density=1){
   # n is the number of nodes, number of columns and rows
   # clique_fraction is the fraction of nodes that are part of the partial clique.
