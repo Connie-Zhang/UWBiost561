@@ -1,0 +1,29 @@
+---
+title: "HW3"
+author: "Connie Zhang"
+date: "2024-04-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r, echo=FALSE}
+library(bookdown)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+## Q1: Designing a function to generate random graphs with partial cliques
+
+```{r}
+source("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/random_graph_functions.R")
+generate_random_graph
+```
+
+### Q1A Create generate_partial_clique() function. 
+
+Create a function generate_partial_clique() inside your UWBiost561 package inside a file called generate_partial_clique.R inside your R folder. 
+
