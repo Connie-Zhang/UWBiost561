@@ -2,9 +2,6 @@
 #' @return a list
 #' @export
 generate_partial_clique <- function(n,clique_fraction=0.5,clique_edge_density=1){
-  # n is the number of nodes, number of columns and rows
-  # clique_fraction is the fraction of nodes that are part of the partial clique.
-  # clique_edge_density is the fraction of edge density among the nodes in the clique.
   stopifnot(n %% 1 == 0, n >= 0,
             clique_fraction >= 0, clique_fraction <= 1,
             density_low >= 0, density_low <= 1)
