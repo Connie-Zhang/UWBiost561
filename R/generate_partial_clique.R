@@ -1,4 +1,4 @@
-
+#' @param n, clique fraction, clique edge density
 #' @return a list
 #' @export
 generate_partial_clique <- function(n,clique_fraction=0.5,clique_edge_density=1){
