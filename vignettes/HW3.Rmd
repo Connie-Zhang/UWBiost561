@@ -16,21 +16,17 @@ library(ggplot2)
 library(dplyr)
 ```
 
-## Q1: Designing a function to generate random graphs with partial cliques
+# Q1: Designing a function to generate random graphs with partial cliques
 
 ```{r}
 source("https://raw.githubusercontent.com/linnykos/561_s2024_public/main/HW2_files/random_graph_functions.R")
-generate_random_graph
+# generate_random_graph
 ```
-
-### Q1A Create generate_partial_clique() function. 
-
-Create a function generate_partial_clique() inside your UWBiost561 package inside a file called generate_partial_clique.R inside your R folder. 
 
 ```{r}
 library(UWBiost561)
 set.seed(0)
-simulation <- UWBiost561::generate_partial_clique(
+simulation <- generate_partial_clique(
   n = 10,
   clique_fraction = 0.5,
   clique_edge_density = 0.9
@@ -38,4 +34,7 @@ simulation <- UWBiost561::generate_partial_clique(
 
 simulation$adj_mat
 ```
+
+# Q2: Designing a function to find the maximal partial clique
+
 
