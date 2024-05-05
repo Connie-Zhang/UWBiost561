@@ -16,7 +16,7 @@ compute_maximal_partial_clique <- function(adj_mat, alpha){
   #   edges[[i]] <- which(adj_mat[i,]==1)
   # }
   # start from row1 and find the connection to the other nodes
-  # partial_cliques <- list()
+  partial_cliques <- list()
   partial_cliques[[1]] <- adj_mat[1,]
   for (i in 2:nrow(adj_mat)){
     for(j in 1:length(partial_cliques)){
