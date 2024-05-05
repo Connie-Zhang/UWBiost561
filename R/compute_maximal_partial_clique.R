@@ -1,5 +1,6 @@
-
-
+#' @param clique fraction, clique edge density
+#' @return a list
+#' @export
 '%!in%' <- function(x,y)!('%in%'(x,y))
 compute_maximal_partial_clique <- function(adj_mat, alpha){
   stopifnot(!!c(0,1) %in% adj_mat,
@@ -35,10 +36,6 @@ compute_maximal_partial_clique <- function(adj_mat, alpha){
   # check if second row connect with first row, if not start its own clique
   # check if third row connect with 1 and 2, if it does merge to old cliques
   # repeat for all rows
-  }
-
-
-
   return(list(clique_idx = clique_idx, edge_density = edge_density))
 }
 
