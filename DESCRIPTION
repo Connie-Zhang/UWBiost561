@@ -15,4 +15,6 @@ Suggests:
     bookdown,
     tidyverse,
     ggplot2
+Imports:
+    igraph
 VignetteBuilder: knitr
