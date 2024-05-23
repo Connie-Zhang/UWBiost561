@@ -23,94 +23,241 @@ set.seed(10)
 library(testthat)
 ```
 
-# Instructions
-
-These instructions are essential, so please read them all carefully. 
-
-- Submit your homework on your GitHub page as the RMarkdown (`.Rmd`) and HTML files. 
-
-- Please answer the question prompt and show your code (inline). That is,
-all your code should be visible in the knitted chunks.
-
-- To complete this homework, you may write in the `HW3.Rmd` file. 
-(It is recommended to complete this homework in R Studio, where clicking the
-`Knit` button would knit your homework.)
-
-# Disclosures
-
-- Please disclose below who you collaborated with and if you've used ChatGPT (or any
-comparable AI tool) to what extent when completing this homework. See the syllabus
-for the course expectations.
-
-# Note about the homework
-
-**Note**: Most of your R code for this homework will **not** be in this homework.
-You mainly write `.R` files inside the `R` or `tests` folders.
-Therefore, you only need to show a little code inside this R Markdown file.
-You only need to write things inside this R Markdown file in the questions that explicitly ask you to do so.
-
-Please use [https://docs.google.com/document/d/1-ZTDPp39zbhsKbQ2FfBoCtiXKQj0jQSg75MAatYfiGI/edit?usp=sharing](https://docs.google.com/document/d/1-ZTDPp39zbhsKbQ2FfBoCtiXKQj0jQSg75MAatYfiGI/edit?usp=sharing) as a resource for this homework.
-
-# Code of conduct for this homework
-
-<mark><u>**Please be respectful to your peers**</u></mark> for this homework. 
-Each student's `compute_maximal_partial_clique()` function is anonymized and
-being used by every other student for this homework. 
-Some implementations of this function work smoother than others. 
-Nonetheless, 1) please be respectful to all the implementations throughout this homework, as you might not realize you're talking to the author of an implementation, and 2) please do not feel embarrassed if you (knowing which implementation is yours, since you wrote it) does not work as well as you initially thought. Please do not try to "figure out" which student wrote which implementation.
-
-I am <u>**overwhelmingly confident**</u> that you all wrote an implementation that suits your current comfort in R (which, of course, is different from student to student).
-
 # Q1: Doing a code review of two other implementations
 
-<mark>**Intent**: The intent of this question is to review other implementations. This is to see how your sense of coding compares to your peers.</mark>
-
-<mark>**Note 1**:</mark> My instructions in HW3 were unclear about how to define the density of a clique size of one (i.e., just one node) -- I (Kevin) apologize. Let's define the edge density of 1 node to be 1 (so returning a set of 1 node is always a valid clique, albeit not the largest one).
-
-In your GitHub Issues for HW3, I have assigned each of you <u>**two**</u> `compute_maximal_partial_clique` implementations to review. For example, if you were assigned #1 and #3, you will be reviewing the implementations of 
-`compute_maximal_partial_clique1()` and `compute_maximal_partial_clique3()`. 
-
-<u>**Question 1A**</u>: We will have gone over in Lecture 8 how to install all the `compute_maximal_partial_clique` implementations into your `UWBiost561` package. In short, you will find a `zip` file on Canvas called `hw4_implementations.zip`. Download it, and unzip the file. You should see a bunch of functions under the `files-to-put-into-R-folder` folder, including a `compute_maximal_partial_clique_master.R` and many `compute_maximal_partial_clique` implementations (each as its own `.R` file).
-Copy and paste <u>**all**</u> these files into your `R` folder in your `UWBiost561` package.
-Then, in your `DESCRIPTION` file, please add `igraph` under `Imports:`. That is, your `DESCRIPTION` file should contain under `Imports:` (at minimum):
-```
-Imports:
-  igraph
-```
-Once you've done both these things, run `devtools::check()` to add the documentation for all the `compute_maximal_partial_clique` functions. (If you had no warnings or errors at the completion of your HW3, you should still have no warnings or errors now.) Then, run `devtools::install()` to install your new `UWBiost561` package.
-<span style="color: blue;">(There is nothing to report for this question.
-You do *not* make these changes to your R Markdown file.)</span>
+<u>**Question 1A**</u>: completed. 
 
 <u>**Question 1B**</u>: Looking at two implementations you were given, summarize what you think the implementations are doing in one to four sentences each. (This is to practice reading other people's code.)
 
-<u>**Question 1C**</u>: In terms of <u>**coding clarity**</u> (i.e., <u>**not**</u> whether the code gives a good answer), are there recommendations you would give the original author of the code to improve their code's clarity? This can be in documentation, variable naming, whether some code could have been factorized into their dedicated functions, if some portion of code was hard to understand, etc. Give none to two suggestions for each implementation. (You can give no suggestions if you thought the code was spectacular -- even if it's not returning a great answer, you can easily understand what the code does despite being written by someone else.)
+I was given implementation #1 and #6. 
+Implementation #1 is an adaptation from the Bron-Kerbosch algorithm, which is a recursive algorithm to find all maximal cliques in a graph. If alpha=1, then Bron-Kerbosch algorithm is applied directly. If alpha<1, the algorithm is modified to not restrict the current node to be neighbors with the remaining nodes. The user can also choose to find the maximal partial clique using the "pivot" or "simple" method. For the pivot method, it will start iterating from the node with the maximum number of edges to other nodes. For the simple method... 
 
-<u>**Question 1D**</u>: In HW3, you wrote down at least 5 unit tests for your implementation of `compute_maximal_partial_clique()`. <u>**In this R Markdown file**</u> (i.e., not in your `tests` folder), copy-paste your 5 unit tests and see if the two `compute_maximal_partial_clique` implementations you were assigned pass your unit tests. If you were assigned implementations #2 and #7, you would test the functions `compute_maximal_partial_clique2()` and `compute_maximal_partial_clique7()`.
+Implementation #6 iterates over each row of the matrix and checks which nodes it is connected to. If it is connected, it is then added into the cliques vector. Then the author updates the maximum density value depends on whether the clique the current row forms is bigger than the other cliques other rows form. 
 
-Note 1: If you have more than 5 unit tests, you only need to try 5 for this question. Since you're testing two implementations, you'll have 10 unit tests total.
+<u>**Question 1C**</u>: For implementation #1, I hope the author can distinguish between the "pivot" and "simple" method more. When would be a time someone would want to use one over the other? The method should also default to either "simple" or "pivot". The author also kind of lost me at why we find the maximal cliques then have to extract the largest clique? Seems to me like the two parts can be combined? For implementation #6, there is a more abbreviated way to check conditions in the first few lines of the function. Otherwise, I think the author does a great job of providing comments in the code to explain what the code is doing. 
 
-Note 2: When copy-pasting your unit tests, you can directly copy-paste the entire `testthat()` function into this R Markdown file the contents of the `testthat()`. (See the example below in the R Markdown file itself. Here, you can either use `library(testthat)` in the R Markdown file or prefix your `test_that()` and other functions with `testthat::`.)
-
-```{r, error = TRUE}
-test_that("A test that passes", {
-  x = 10
-  expect_true(x == 10)
-})
-
-test_that("A test that fails", {
-  x = 10
-  expect_true(x != 10)
-})
-```
-
-Note 3: You can write two large R code chunks, one for each implementation's 5 unit tests. Since the implementation you've been assigned might not necessarily pass your unit tests, please set the `error = TRUE` flag in your R code chunk options. (See the example below in the R Markdown file itself.)
+<u>**Question 1D**</u>: For implementation #6, it passed all the tests. For implementation 1, it passes the second test, but for the first, third, fourth, and fifth tests, the run time is too long (for both pivot and simple methods). I have commented out the first, fourth, and fifth tests due to run time issues. 
 
 ```{r, error = TRUE}
-rowSums(1:5)
-"asdf" + "1234"
+# test_that("compute_maximal_partial_clique works",{
+#   set.seed(10)
+#   simulation <- generate_partial_clique(
+#     n = 30,
+#     clique_fraction = 0.5,
+#     clique_edge_density = 0.7
+#   )
+# 
+#   adj_mat <- simulation$adj_mat
+# 
+#   res <- compute_maximal_partial_clique1(
+#     adj_mat = adj_mat,
+#     alpha = 0.7,
+#     method="pivot"
+#   )
+# 
+#   expect_true(is.list(res))
+#   expect_true(length(res$clique_idx)<=30)
+#   expect_true(res$edge_density>=0.7)
+# })
+
+test_that("compute_maximal_partial_clique1 stops if given incorrect input",{
+  set.seed(10)
+  simulation <- cbind(c(1,0,2),c(0,1,0),c(2,0,1))
+  simulation2 <- rep(c(1,0,1,0,1),50)
+
+  expect_error(compute_maximal_partial_clique1(
+    adj_mat = simulation,
+    alpha = 0.7,
+    method="simple"
+  ))
+  expect_error(compute_maximal_partial_clique1(
+    adj_mat = simulation,
+    alpha = 1.7,
+    method="simple"
+  ))
+  expect_error(compute_maximal_partial_clique1(
+    adj_mat = simulation2,
+    alpha = 0.7,
+    method="simple"
+  ))
+})
+
+test_that("compute_maximal_partial_clique1 takes less than 30 seconds to compute a 30 by 30 matrix",{
+  set.seed(10)
+  simulation <- generate_partial_clique(
+    n = 30,
+    clique_fraction = 0.5,
+    clique_edge_density = 0.7,
+    method="simple"
+  )
+
+  adj_mat <- simulation$adj_mat
+
+  start_time <- Sys.time()
+  res <- compute_maximal_partial_clique1(
+    adj_mat = adj_mat,
+    alpha = 0.7,
+    method="simple"
+  )
+  end_time <- Sys.time()
+
+  expect_true(difftime(end_time, start_time, units = "secs") < 30)
+})
+
+# test_that("compute_maximal_partial_clique1 work for matrices of all 1s",{
+#   set.seed(10)
+# 
+#   simulation2 <- matrix(1, nrow = 30, ncol = 30)
+# 
+#   res2 <- compute_maximal_partial_clique1(
+#     adj_mat = simulation2,
+#     alpha = 0.7,
+#     method="simple"
+#   )
+# 
+#   expect_true(is.list(res2))
+#   expect_true(length(res2$clique_idx)==30)
+#   expect_true(res2$edge_density==1)
+# })
+
+# test_that("compute_maximal_partial_clique1 will find the maximal clique with edge
+#           density greater than or equal to alpha",{
+#   set.seed(10)
+#   simulation <- generate_partial_clique(
+#     n = 30,
+#     clique_fraction = 0.5,
+#     clique_edge_density = 0.7
+#     )
+#   simulation2 <- generate_partial_clique(
+#     n =25,
+#     clique_fraction = 0.5,
+#     clique_edge_density = 0.5)
+# 
+#   alpha <- c(0.7,0.5)
+#   res <- compute_maximal_partial_clique1(
+#     adj_mat = simulation$adj_mat,
+#     alpha = alpha[1],
+#     method="simple"
+#   )
+#   res2 <- compute_maximal_partial_clique1(
+#     adj_mat = simulation2$adj_mat,
+#     alpha = alpha[2],
+#     method="simple"
+#   )
+#   m <- c(length(res$clique_idx), length(res2$clique_idx))
+# 
+# 
+#   expect_true((sum(simulation$adj_mat[res$clique_idx,res$clique_idx])-m[1])/2 >= alpha[1]*m[1]*(m[1]-1)/2)
+#   expect_true((sum(simulation2$adj_mat[res2$clique_idx,res2$clique_idx])-m[2])/2 >= alpha[2]*m[2]*(m[2]-1)/2)
+#   })
 ```
 
-Note 4: If you would like to test for things that weren't in your HW3, feel free to do so. (Your tests for this question don't literally need to be the same ones you created for HW3.)
+```{r}
+test_that("compute_maximal_partial_clique6 works",{
+  set.seed(10)
+  simulation <- generate_partial_clique(
+    n = 30,
+    clique_fraction = 0.5,
+    clique_edge_density = 0.7
+  )
+
+  adj_mat <- simulation$adj_mat
+
+  res <- compute_maximal_partial_clique6(
+    adj_mat = adj_mat,
+    alpha = 0.7
+  )
+
+  expect_true(is.list(res))
+  expect_true(length(res$clique_idx)<=30)
+  expect_true(res$edge_density>=0.7)
+})
+
+test_that("compute_maximal_partial_clique6 stops if given incorrect input",{
+  set.seed(10)
+  simulation <- cbind(c(1,0,2),c(0,1,0),c(2,0,1))
+  simulation2 <- rep(c(1,0,1,0,1),50)
+
+  expect_error(compute_maximal_partial_clique6(
+    adj_mat = simulation,
+    alpha = 0.7
+  ))
+  expect_error(compute_maximal_partial_clique61(
+    adj_mat = simulation,
+    alpha = 1.7
+  ))
+  expect_error(compute_maximal_partial_clique61(
+    adj_mat = simulation2,
+    alpha = 0.7
+  ))
+})
+
+test_that("compute_maximal_partial_clique6 takes less than 30 seconds to compute a 30 by 30 matrix",{
+  set.seed(10)
+  simulation <- generate_partial_clique(
+    n = 30,
+    clique_fraction = 0.5,
+    clique_edge_density = 0.7
+  )
+
+  adj_mat <- simulation$adj_mat
+
+  start_time <- Sys.time()
+  res <- compute_maximal_partial_clique6(
+    adj_mat = adj_mat,
+    alpha = 0.7
+  )
+  end_time <- Sys.time()
+
+  expect_true(difftime(end_time, start_time, units = "secs") < 30)
+})
+
+test_that("compute_maximal_partial_clique6 work for matrices of all 1s",{
+  set.seed(10)
+
+  simulation2 <- matrix(1, nrow = 30, ncol = 30)
+
+  res2 <- compute_maximal_partial_clique6(
+    adj_mat = simulation2,
+    alpha = 0.7
+  )
+
+  expect_true(is.list(res2))
+  expect_true(length(res2$clique_idx)==30)
+  expect_true(res2$edge_density==1)
+})
+
+test_that("compute_maximal_partial_clique6 will find the maximal clique with edge
+          density greater than or equal to alpha",{
+  set.seed(10)
+  simulation <- generate_partial_clique(
+    n = 30,
+    clique_fraction = 0.5,
+    clique_edge_density = 0.7
+    )
+  simulation2 <- generate_partial_clique(
+    n =25,
+    clique_fraction = 0.5,
+    clique_edge_density = 0.5)
+
+  alpha <- c(0.7,0.5)
+  res <- compute_maximal_partial_clique6(
+    adj_mat = simulation$adj_mat,
+    alpha = alpha[1]
+  )
+  res2 <- compute_maximal_partial_clique6(
+    adj_mat = simulation2$adj_mat,
+    alpha = alpha[2]
+  )
+  m <- c(length(res$clique_idx), length(res2$clique_idx))
+
+
+  expect_true((sum(simulation$adj_mat[res$clique_idx,res$clique_idx])-m[1])/2 >= alpha[1]*m[1]*(m[1]-1)/2)
+  expect_true((sum(simulation2$adj_mat[res2$clique_idx,res2$clique_idx])-m[2])/2 >= alpha[2]*m[2]*(m[2]-1)/2)
+  })
+```
+
+
 
 # Q2: Constructing a simulation study
 
@@ -120,11 +267,9 @@ In this question, you'll be designing a simulation. You will be doing this on Ba
 
 Note: inside the file `compute_maximal_partial_clique_master.R` (which should now be in your `R` folder), I've provided you two functions: `compute_maximal_partial_clique_master()` and `compute_correct_density()`. You will find both functions useful for Q2 and Q3.
 
-<u>**Question 2A**</u>:
+<u>**Question 2A**</u>: If I change n to 50 and time to 7, result 1 is all NA since it terminated prematurely, implementation 11 without the time limit will take too long to run. 
 
-Please run the following code. If you cannot run it, something has gone wrong with your `UWBiost561` package. (For instance, it might be because your `generate_partial_clique()` function does not work or is not correctly located in your R package.)
-
-```{r, eval = FALSE}
+```{r}
 library(UWBiost561)
 set.seed(10)
 data <- UWBiost561::generate_partial_clique(n = 10, 
@@ -142,18 +287,11 @@ result1
 
 set.seed(10)
 result2 <- UWBiost561::compute_maximal_partial_clique11(
-  adj_mat = data$adj_mat, 
+  adj_mat = data$adj_mat,
   alpha = 0.95
 )
 result2
 ```
-
-As you can see, the `compute_maximal_partial_clique_master()` function: 1) takes a `number` argument (which allows you to control which implementation of `compute_maximal_partial_clique` you're using) and 2) sets a timer (here, of 30 seconds)
-so that the function terminates in at most 30 seconds.
-
-Using the provided code as a framework, use the `compute_maximal_partial_clique_master()` with a setting of `time_limit` such that the function terminates prematurely, i.e., `time_limit` is set to be a small number. (That is, if, hypothetically, the function required 40 seconds to complete, but you set `time_limit` to only be 30 seconds.) By changing the ' number ' argument, you can use any implementation of `compute_maximal_partial_clique` you prefer for this question.
-
-Note: For this question, you want to generate an adjacency matrix where `n` is large (i.e., a value close to 50), but `time_limit` is very small (i.e., just a few seconds). You deliberately want to cause a `timed_out` status.
 
 <u>**Question 2B**</u>: Describe what you would like your simulation to study in a few sentences. Specifically, you are making a <u>**simulation plan**</u> (see Lecture 8 for details).
 
