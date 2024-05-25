@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 )
 set.seed(10)
 library(testthat)
+library(UWBiost561)
+library(igraph)
 ```
 
 # Q1: Doing a code review of two other implementations
@@ -52,7 +54,7 @@ Implementation #6 iterates over each row of the matrix and checks which nodes it
 #   res <- compute_maximal_partial_clique1(
 #     adj_mat = adj_mat,
 #     alpha = 0.7,
-#     method="pivot"
+#     method="simple"
 #   )
 # 
 #   expect_true(is.list(res))
@@ -82,27 +84,27 @@ test_that("compute_maximal_partial_clique1 stops if given incorrect input",{
   ))
 })
 
-test_that("compute_maximal_partial_clique1 takes less than 30 seconds to compute a 30 by 30 matrix",{
-  set.seed(10)
-  simulation <- generate_partial_clique(
-    n = 30,
-    clique_fraction = 0.5,
-    clique_edge_density = 0.7,
-    method="simple"
-  )
-
-  adj_mat <- simulation$adj_mat
-
-  start_time <- Sys.time()
-  res <- compute_maximal_partial_clique1(
-    adj_mat = adj_mat,
-    alpha = 0.7,
-    method="simple"
-  )
-  end_time <- Sys.time()
-
-  expect_true(difftime(end_time, start_time, units = "secs") < 30)
-})
+# test_that("compute_maximal_partial_clique1 takes less than 30 seconds to compute a 30 by 30 matrix",{
+#   set.seed(10)
+#   simulation <- generate_partial_clique(
+#     n = 30,
+#     clique_fraction = 0.5,
+#     clique_edge_density = 0.7,
+#     method="simple"
+#   )
+# 
+#   adj_mat <- simulation$adj_mat
+# 
+#   start_time <- Sys.time()
+#   res <- compute_maximal_partial_clique1(
+#     adj_mat = adj_mat,
+#     alpha = 0.7,
+#     method="simple"
+#   )
+#   end_time <- Sys.time()
+# 
+#   expect_true(difftime(end_time, start_time, units = "secs") < 30)
+# })
 
 # test_that("compute_maximal_partial_clique1 work for matrices of all 1s",{
 #   set.seed(10)
@@ -153,7 +155,7 @@ test_that("compute_maximal_partial_clique1 takes less than 30 seconds to compute
 ```
 
 ```{r}
-test_that("compute_maximal_partial_clique6 works",{
+testthat::test_that("compute_maximal_partial_clique6 works",{
   set.seed(10)
   simulation <- generate_partial_clique(
     n = 30,
@@ -293,98 +295,37 @@ result2 <- UWBiost561::compute_maximal_partial_clique11(
 result2
 ```
 
-<u>**Question 2B**</u>: Describe what you would like your simulation to study in a few sentences. Specifically, you are making a <u>**simulation plan**</u> (see Lecture 8 for details).
+<u>**Question 2B**</u>: 
 
-Your plan should answer the following questions:
-
-- 1) How are you generating the random graphs for your analysis? What qualities do those random graphs have? (You can use your `generate_partial_clique()` function, and then you would describe what kind of graph your `generate_partial_clique()` makes.)
-- 2) How are you varying the random graphs across the different "levels" of your analysis? (For example, you can vary `n`, `clique_fraction`, `clique_edge_density`, and/or `alpha`. Your simulation study can focus on changing one or two values.)
-- 3) Which different methods are you using in your simulation study? (This question is moot for this homework since you'll be using all 25 implementations of `compute_maximal_partial_clique`, but please write this down for thoroughness.)
-- 4) What do you hope to learn with your simulation study? Alternatively, what trends/patterns/results are you hoping to see?
-- 5) How many trials do you intend to run per "level"?
-- 6) How much time do you estimate your simulation study will need at maximum? See Note 2 below.
-
-The only hard requirements I am imposing for this simulation study are:
-
-- You **<u>must</u>** use all 25 implementations of `compute_maximal_partial_clique` in your simulation study, where each method is used on every adjacency matrix you generate.
-- Your simulation study must have at least 2 different levels, and at least 2 trials for each level. 
-- If you are choosing to vary `n` (the number of nodes), the largest `n` you consider in your simulation study is `n=50`.
-- Please use `compute_maximal_partial_clique_master()` when using each of the 25 implementations (instead of calling the `compute_maximal_partial_clique` implementations directly). Additionally, please do not set `time_limit` to be larger than 30 (i.e., regardless of large your simulation study gets, please do not allow more than 1 minute for any implementation). There are 25 implementations, and I wouldn't want just one trial to take more than 15 minutes!
-- <mark>Your simulation study should take <u>**less than 5 hours**</u> to run to completion on a single core (i.e., not parallelized). See Note 2 below.</mark>
-
-Some ideas of what you can test for is: how often does each method get the maximal partial clique (among all 25 methods) when the number of nodes `n` changes, or when `alpha` changes? You can also try incorporating how fast an implementation is (in terms of time) into your simulation study.
-
-Feel free to post on Canvas Discussions your thoughts on the simulation study if you are unsure about your simulation study. 
-
-Note 1: If you choose to vary `n` in your simulation study, a value of `n` of 30 or more will make your simulation take a long time to finish. 
-
-Note 2: You will use the `compute_maximal_partial_clique_master()`, which can time a function out after a `time_limit` number of seconds (by default, 30 seconds). Therefore, the number of problem instances you will solve is, roughly speaking, (the number of levels) x (the number of methods) x (the number of trials per level), and the maximum time your simulation would need would be (the number of levels) x (the number of methods) x (the number of trials per level) x 30 seconds. 
-
-Note 3: Please design a straightforward or complicated simulation study appropriate to your comfort in coding. If you are overwhelmed by this homework, you can code a simulation study that only takes a few minutes to complete. (You can use the demo in class as a rough skeleton for your simulation study. Of course, you can design your own way to perform a simulation study as well.)
-
-Note 4: For the simulation study, you will (of course) need to generate random adjacency matrices. You can use the `generate_partial_clique()` you already created for HW3, but you can also modify `generate_partial_clique()` to better suit your simulation study's goals.
-
-Note 5: If you feel overwhelmed, you can more-or-less plan a simulation study that is very similar to the demo done in class (Lecture 8). Specifically, inside the `hw4_implementations.zip`, there are files `hw4-demo_bayes_execute.R`, `hw4-demo_bayes_execute.slurm`, and ``hw4-demo_bayes_plot.R` that effectively tell you how to do a specific simulation study. Feel free to use these scripts as closely as you want for your simulation study. (However, you would still need to make a simulation function and follow the guidelines still. There is still some non-trivial work you would still need to do.)
+I am hoping to test the functions' abilities to test for the maximal partial clique in a graph with a high clique fraction and low edge density. I plan to generate a graph with n=10, clique_fraction = 0.8, and clique_edge_density= 0.1 and 0.2 (for the different levels). I will be implementing all 25 methods in my simulation study. I'm hoping to see how the methods perform when we try to find a clique with low density. I am intending to run 2 trials per level. The maximum time I estimate for my simulation study 2x2x25x30 = 3000 seconds. 
 
 <span style="color: blue;">(This is a writing question, not a coding question.)</span>
 
-<u>**Question 2C**</u>: In your `R` folder, design a function that executes your intended simulation plan. (I am purposely being loose and very open-ended about designing this simulation regarding the inputs or outputs. In contrast to HW3, where everything was spelled out explicitly, I am now giving you the task of meaningfully designing the inputs/outputs.)
-
-Note 1: You want to use `compute_maximal_partial_clique_master()` in your simulation. This would make your life easier when switching between different implementations. The main difficulties in this question are: 
-
-- 1) How to extract and store the results of `compute_maximal_partial_clique_master()`
-- 2) How do you decide what meaningful outputs your simulation function should return (for example, you probably don't need to return the `adj_mat` adjacency matrices themselves)? This will highly depend on what your simulation plan is trying to study!
-- 3) How to handle the instances when `compute_maximal_partial_clique_master()`: A) times out, B) errors, or C) outputs an alleged `clique_idx` that is invalid because it doesn't form a partial clique with edge density `alpha` or larger.
-
-Note 2: Be aware -- you should be a healthy skeptic when using other people's code in a simulation. Just because a method claims it found a partial clique, you should verify that it is indeed a partial clique with edge density larger than `alpha`. You might want to use the `compute_correct_density()` function provided in `compute_maximal_partial_clique_master.R`.
-
-Note 3: I am asking you to make a <u>**function**</u> to perform your simulation (instead of just an R script) since I will be asking you to test your simulation function in Question 2D below.
-
-Note 4: You should allow your simulation function to take as input the different levels of your simulation study and the number of trials (and other parameters of your choosing). That way, you can more easily "test" a "simple" simulation study in Question 2D below.
-
-Note 5: You (ideally) want to set up your simulation such that for each trial in a level, you generate <u>**one**</u> random adjacency matrix that is used in <u>**all 25**</u> different implementations of `compute_maximal_partial_clique`. This gives a "fair" comparison across all 25 methods. You also might want to set the random seed (via `set.seed()`) before generating that random adjacency matrix for this trial so you can easily reproduce the results from a particular trial if needed.
-
-Note 6: This question is the hardest part of HW4. Since this question is purposely more open-ended, it is harder to use ChatGPT to help you with this function. However, most of your future coding experiences will be open-ended, so practicing "coding with ChatGPT" in more unstructured settings is good. I encourage you to work with your classmates on this question (but, as per our syllabus rules, do not directly copy your classmate's code).
+<u>**Question 2C**</u>: 
 
 <span style="color: blue;">(There is nothing to report for this question. Your code will be in the `R` folder, **not**
 in this R Markdown file.)</span>
 
-<u>**Question 2D**</u>: Create a few (more than one) unit tests for your simulation function. This unit test (like your unit tests in HW3) will be in your `tests/testthat` folder. I am also purposely vague about how many tests or what kind of unit tests to write. This is for you to decide! After all, you're about to unleash your code to perform a (potentially long) simulation test, so you hope you've tested your simulation code well enough for this to be a good use of time.
-
-Note: Your unit tests should be <u>**fast**</u> (i.e., take no more than a minute to run). This means your unit tests should <u>**not**</u> be performing your complete simulation study. After all, it'll be a useless unit test if it takes an hour to figure out if your unit test passed. However, you want your unit tests (which take less than a minute) to give you confidence that your code will work when running the complete simulation study (which might take more than an hour).
+<u>**Question 2D**</u>: 
 
 <span style="color: blue;">(There is nothing to report for this question. Your code will be in the `tests/testthat` folder, **not**
 in this R Markdown file.)</span>
 
-<u>**Question 2E**</u>: Similar to what you did in HW3, please include a screenshot of your output after running `devtools::check()`. You should still have a `UWBiost561` package
-that passes all the checks and your unit tests.
-(As a guideline, one screenshot should show the first 20-or-so lines of your 
-`devtools::check()` results, and a second screenshot should show the last 
-20-or-so lines of your results.) You can use the `knitr::include_graphics()` function to include
-figures inside this R Markdown file.
+<u>**Question 2E**</u>: 
 
-The intent of this question is to provide "evidence" that your `devtools::check()`
-went smoothly. You do not need to worry about what your screenshots show specifically.
+```{r}
+knitr::include_graphics("Screenshot3.png")
+knitr::include_graphics("Screenshot4.png")
+```
 
 # Q3: Performing the simulation study
 
-<mark>**Intent**: The intent of this question is to perform the simulation study and to practice visualizing simulation results.</mark>
-
-Now that you've written a function to perform your simulation study, you want to write more code to perform the actual simulation study. This will technically involve at least 3 new files in your `vignettes` folder: one `.R` file to perform the simulation study, one accompanying `.slurm` script to submit those above `.R` file to Bayes, and one `.R` file to load the simulation results and visualize the results. The following questions will guide you through these three files.
-
-<u>**Question 3A**</u>: In your `vignettes` folder, make a file called `HW4_simulation_execute.R`, which will be a R script that: 1) loads your `UWBiost561` package, and 2) executes your simulation function inside your `UWBiost561` package.
-This simulation will be the "full" simulation study you outlined in Question 2B above.
-(This is the specific `.R` file that might take a couple of hours to finish, depending on how complex your simulation study is.) The end of your `HW4_simulation_execute.R` should save your simulation results as `HW4_simulation.RData`, an `.RData` file. (For example, the argument to the `save()` function could be `file = ~/HW4_simulation.RData`. This would save the results to a `HW4_simulation.RData` file under your home directory on Bayes.) 
-
-Then, make an accompanying `HW4_simulation_execute.slurm` that submits your `HW4_simulation_execute.R` as a job to Bayes. Please limit yourself to `10gb` of memory (i.e., a line in `HW4_simulation_execute.slurm` should read `#SBATCH --mem-per-cpu=10gb`). (Your simulation study should not require more than 10 Gigabytes of memory. If it does, you are likely not being practical in your simulation study.)
+<u>**Question 3A**</u>: 
 
 <span style="color: blue;">(There is nothing to report for this question. Your code will be in the `vignettes` folder, **not**
 in this R Markdown file.)</span>
 
-See Lectures 7 and 8 for more details on how to do this.
-
-<u>**Question 3B**</u>: Now, install both `igraph` and your `UWBiost561` package in R.
-The `igraph` package can be installed as usual (i.e., via `install.packages(igraph)` in an interactive R session on Bayes). Lecture 8 and [https://docs.google.com/document/d/1-ZTDPp39zbhsKbQ2FfBoCtiXKQj0jQSg75MAatYfiGI/edit?usp=sharing](https://docs.google.com/document/d/1-ZTDPp39zbhsKbQ2FfBoCtiXKQj0jQSg75MAatYfiGI/edit?usp=sharing) will give you a few options on how to install your `UWBiost561` package on Bayes.
+<u>**Question 3B**</u>: 
 
 <span style="color: blue;">(There is nothing to report for this question.)</span>
 
