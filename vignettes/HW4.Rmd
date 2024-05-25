@@ -329,11 +329,7 @@ in this R Markdown file.)</span>
 
 <span style="color: blue;">(There is nothing to report for this question.)</span>
 
-<u>**Question 3C**</u>: Now, run your simulation study. In the terminal, this means you will 1) navigate to your `UWBiost561/vignettes` folder on Bayes (this might be something like `cd ~/UWBiost561/vignettes`) and 2) run the command: `sbatch HW4_simulation_execute.slurm`.
-
-Note 1: This question might cause you pain since you might not know if your script is working as intended. (Additionally, suppose you did not test your simulation function thoroughly. In that case, your `HW4_simulation_execute.slurm` script might crash, and you'll be forced to debug your `UWBiost561` package and re-install it, etc. It's a pain. Trust me, you want to test your simulation function thoroughly before you do this Question.)
-
-<mark><u>**Note 2:**</u> Do <u>**not**</u> parallelize your simulation across multiple cores or write a batch SLURM script to submit multiple jobs for this question. (Many of you will likely be working on the homework at similar times, and I cannot guarantee that the server can allow an entire course of students to submit parallelized jobs simultaneously.) If this note does not make any sense to you, don't worry about it.</mark>
+<u>**Question 3C**</u>: 
 
 <span style="color: blue;">(There is nothing to report for this question. You are simply running your `HW4_simulation_execute.slurm` file.)</span>
 
