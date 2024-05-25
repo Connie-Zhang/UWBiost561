@@ -1,0 +1,52 @@
+
+R version 4.2.3 (2023-03-15) -- "Shortstop Beagle"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> rm(list=ls())
+> set.seed(10)
+> library(UWBiost561)
+> 
+> imp_numbers <- 1:25
+> trials <- 2
+> density_vec <- c(0.1,0.2)
+> 
+> level_trial_list <- UWBiost561::simulation(density_vec, trials, imp_numbers)
+[1] "Value of clique edge density: 0.1"
+[1] "Working on trial: 1"
+*************************
+[1] "Working on trial: 2"
+*************************
+[1] "===="
+[1] "Value of clique edge density: 0.2"
+[1] "Working on trial: 1"
+*************************
+[1] "Working on trial: 2"
+*************************
+[1] "===="
+> names(level_trial_list) <- paste0("clique edge density:", density_vec)
+> date_of_run <- Sys.time()
+> session_info <- devtools::session_info()
+> 
+> save(level_trial_list, # save your results
++      density_vec, # save which alphas you used (for convenience)
++      date_of_run, session_info,
++      file = "~/HW4_simulation.RData")
+> 
+> proc.time()
+   user  system elapsed 
+242.782   1.030 244.175 
