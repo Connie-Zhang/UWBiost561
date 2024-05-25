@@ -7,4 +7,4 @@
 #SBATCH --time=12:00:00
 #SBATCH --mem-per-cpu=10gb
 
-R CMD BATCH --no-save --no-restore simulation_execute.R
+R CMD BATCH --no-save --no-restore HW4_simulation_execute.R
