@@ -2,8 +2,8 @@ pandoc: 3.1.11
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  Get Started: Get Started.html
-last_built: 2024-06-04T19:47Z
+  UWBiost561_demo: UWBiost561_demo.html
+last_built: 2024-06-04T21:39Z
 urls:
   reference: https://connie-zhang.github.io/UWBiost561/reference
   article: https://connie-zhang.github.io/UWBiost561/articles
