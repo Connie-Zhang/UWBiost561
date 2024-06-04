@@ -21,3 +21,6 @@ Generate a symmetric adjacent matrix of the specified size
 Replace the upper left corner of the original matrix with 1s by the clique_edge_density to create a partial clique. Symmetrize the matrix.
 Randomize the matrix and keep track of the order of randomization
 }
+\examples{
+generate_partial_clique(10,0.5,0.5)
+}
