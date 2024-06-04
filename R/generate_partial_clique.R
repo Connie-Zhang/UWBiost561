@@ -10,6 +10,8 @@
 #' @param clique_edge_density the edge density of the clique
 #'
 #' @return a list containing the matrix with a partial clique, the randomized matrix, and the order of randomization
+#' @examples
+#' generate_partial_clique(10,0.5,0.5)
 #' @export
 generate_partial_clique <- function(n,clique_fraction=0.5,clique_edge_density=1){
   stopifnot(n %% 1 == 0, n >= 0,

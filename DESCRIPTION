@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Connie", "Zhang", , "yz347@uw.edu", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package consists of all the coding we have done for the UWBiost 561 homeworks. There are two specific functions written for this class: generate_partial_clique and compute_maximal_partial_clique.
+Description: This package is the final project for BIOST561. There are three specific functions written for this class: generate_partial_clique, compute_maximal_partial_clique, and reorder_clique.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

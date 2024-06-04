@@ -11,6 +11,9 @@
 #' @param alpha the edge density of the adjacency matrix
 #'
 #' @return a list containing the indices of the maximal partial clique, the edge density of the maximal partial clique, and all partial cliques in the adjacency matrix
+#' @examples
+#' adj_mat <- generate_partial_clique(10,0.5,0.5)$adj_mat
+#' compute_maximal_partial_clique(adj_mat, 0.5)$clique_idx
 #' @export
 compute_maximal_partial_clique <- function(adj_mat, alpha){
   stopifnot((1 %in% adj_mat |  0 %in% adj_mat),

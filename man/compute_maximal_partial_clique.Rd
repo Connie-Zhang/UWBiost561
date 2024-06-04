@@ -21,3 +21,7 @@ For each subsequent row, check if it connects with any of the existing partial c
 If it does, append to the existing partial cliques; if it doesn't, create a new partial clique for this row.
 Return the partial clique with the most nodes
 }
+\examples{
+adj_mat <- generate_partial_clique(10,0.5,0.5)$adj_mat
+compute_maximal_partial_clique(adj_mat, 0.5)$clique_idx
+}
