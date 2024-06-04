@@ -1,0 +1,69 @@
+---
+title: "Demo"
+author: "Connie Zhang"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    theme: united
+vignette: >
+  %\VignetteIndexEntry{Demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is a demo vignette for my package. We will generate an adjacency matrix...  
+
+The following lines of code...
+
+```{r}
+library(UWBiost561)
+set.seed(561)
+```
+
+# Generating Partial Cliques
+
+We will generate two partial cliques: one partial clique with 10 nodes, 50% of which are in the clique, and the clique has an edge density of 50%, and another partial clique with 10 nodes, 30% of which are in the clique, and the clique has an edge density of 70%.
+
+```{r}
+partial_clique1 <- generate_partial_clique(10,0.5,0.5)$adj_mat
+partial_clique2 <- generate_partial_clique(10,0.3,0.2)$adj_mat
+partial_clique1
+partial_clique2
+```
+
+# Reordering Partial Cliques
+
+We will then reorder the partial cliques based on a random permutation of the nodes.
+
+```{r}
+order1 <- sample(10,10,replace=FALSE)
+order2 <- sample(10,10,replace=FALSE)
+reordered_clique1 <- reorder_clique(partial_clique1, order1)
+reordered_clique2 <- reorder_clique(partial_clique2, order2)
+reordered_clique1
+reordered_clique2
+```
+
+# Computing Maximal Partial Cliques
+
+Now we compute the maximal partial cliques in the two partial cliques.
+
+```{r}
+maximal_clique1 <- compute_maximal_partial_clique(partial_clique1, 0.5)$clique_idx
+maximal_clique2 <- compute_maximal_partial_clique(partial_clique2, 0.5)$clique_idx
+maximal_clique1
+maximal_clique2
+```
+
+
+
